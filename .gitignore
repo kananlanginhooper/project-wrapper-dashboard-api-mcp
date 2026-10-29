@@ -1,0 +1,8 @@
+.env
+config/tabs.json
+local/
+node_modules/
+dist/
+.angular/
+__pycache__/
+*.pyc

@@ -1,0 +1,8 @@
+**/node_modules
+**/dist
+**/.angular
+**/__pycache__
+.env
+config/tabs.json
+local/
+.git
