@@ -9,7 +9,6 @@ One top nav over many dashboards. Every tab is a **standalone app shown in an if
 **Planned:**
 - An MCP server, so assistants can list and open dashboards.
 - Login through the companion IdP, [OpenID-Connect-Python-Auth-for-private-sites](https://github.com/kananlanginhooper/OpenID-Connect-Python-Auth-for-private-sites).
-- The tab list in a database table.
 
 ## Run it
 
@@ -33,10 +32,34 @@ For UI work: `cd ui && npm ci && npx ng serve`. Run the API on 8097 next to it.
 | `FRAME_ANCESTORS` | Origins allowed to frame the wrapper itself. Normally empty, which sends `frame-ancestors 'self'` |
 | `FORWARDED_ALLOW_IPS` | Reverse proxies whose `X-Forwarded-*` headers are trusted |
 | `LOGIN`, `OIDC_ISSUER`, `OIDC_CLIENT_ID` | Login through the IdP (off until it is live) |
+| `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` | The tab table (Postgres). Empty `DB_HOST` means the tabs file is used |
+| `TABS_ENV` | Which URL each tab gets (`laptop`, `server`, ...) |
 
 `GET /api/config` returns `{ apiBase, basePath, publicUrl, frameParents, login: { enabled, issuer, clientId } }`.
 
 ## Tabs
+
+The tab list comes from one of two sources:
+- **A Postgres table**, when `DB_HOST` is set.
+- **`config/tabs.json`**, when it isn't.
+
+### The tab table
+
+The wrapper creates the tables at start: `tab` and `tab_url`.
+
+An app's address usually differs per machine, so each tab has a URL per environment. The wrapper picks the row for its `TABS_ENV` (for example `laptop` or `server`), falling back to `default`. That lets the laptop and the server share one database.
+
+```bash
+docker compose exec wrapper python -m wrapper.cli list
+docker compose exec wrapper python -m wrapper.cli set media --title "Media library" --order 40 --url laptop=http://localhost:8093/ --url server=http://host:8093/
+docker compose exec wrapper python -m wrapper.cli set media --disable          # only the given fields change
+docker compose exec wrapper python -m wrapper.cli import /config/tabs.json --env laptop
+docker compose exec wrapper python -m wrapper.cli remove media
+```
+
+If the database is unreachable, the nav says so and the wrapper keeps running.
+
+### The tabs file
 
 `config/tabs.json` is a list of tabs:
 

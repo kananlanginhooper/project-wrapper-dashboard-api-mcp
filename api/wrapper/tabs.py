@@ -1,7 +1,7 @@
 """The tab list: which dashboards the wrapper shows, each one a standalone app in an iframe.
 
-Source today: a JSON file (TABS_FILE), re-read on every request, so editing it adds a tab without a restart.
-Planned: a database table with the same fields (id, title, url, order, description, enabled).
+Source: the Postgres tab table when DB_HOST is set (see db.py), otherwise a JSON file (TABS_FILE). Both are read on
+every request, so a new row or a file edit adds a tab without a restart.
 
 File format: a list of {"id": "first-app", "title": "First app", "url": "http://host:port/", "order": 10,
 "description": "...", "enabled": true}. The file is per machine (laptop and server URLs differ), so it isn't committed.
@@ -10,12 +10,12 @@ import json
 import re
 from urllib.parse import urlsplit
 
-from . import settings
+from . import db, settings
 
 ID = re.compile(r"^[a-z0-9][a-z0-9-]{0,39}$")
 
 
-def _check(row):
+def check(row):
     if not isinstance(row, dict):
         return "not an object"
     if not ID.match(str(row.get("id", ""))):
@@ -30,6 +30,15 @@ def _check(row):
 
 def load():
     """(tabs, problems): enabled, valid rows sorted by order then title, plus a note for every row that was skipped."""
+    if db.enabled():
+        try:
+            return db.load()
+        except Exception as e:   # a database hiccup shows in the nav instead of taking the wrapper down
+            return [], [f"tab table unreachable: {type(e).__name__}"]
+    return load_file()
+
+
+def load_file():
     try:
         with open(settings.TABS_FILE, encoding="utf-8") as f:
             rows = json.load(f)
@@ -39,7 +48,7 @@ def load():
         return [], [f"tab list unreadable: {e}"]
     tabs, problems, seen = [], [], set()
     for i, row in enumerate(rows if isinstance(rows, list) else []):
-        err = _check(row) or ("duplicate id" if row.get("id") in seen else None)
+        err = check(row) or ("duplicate id" if row.get("id") in seen else None)
         if err:
             problems.append(f"row {i + 1}: {err}")
             continue
