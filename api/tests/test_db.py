@@ -54,3 +54,14 @@ def test_per_env_urls_and_partial_update(tabs, monkeypatch):
     tabs.upsert("plan", enabled=False)
     assert [t.id for t in tabs.list_tabs().tabs] == []
     assert tabs.remove("plan") and not tabs.remove("plan")
+
+
+def test_title_order_ignores_case_and_url_change_bumps_updated_at(tabs):
+    tabs.upsert("b", "beta", 10, urls={"default": "http://b/"})
+    tabs.upsert("a", "Alpha", 10, urls={"default": "http://a/"})
+    tabs.upsert("c", "Charlie", 10, urls={"default": "http://c/"})
+    assert [t.id for t in tabs.list_tabs().tabs] == ["a", "b", "c"]
+
+    before = {r.id: r.updated_at for r in tabs.all_rows()}["b"]
+    tabs.upsert("b", urls={"default": "http://b2/"})  # URL only
+    assert {r.id: r.updated_at for r in tabs.all_rows()}["b"] > before
