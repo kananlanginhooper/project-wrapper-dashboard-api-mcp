@@ -1,12 +1,24 @@
 """Home dashboards: serves the Angular shell, GET /api/config and GET /api/tabs. (An MCP endpoint is planned.)"""
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 
-from . import settings, tabs
+from . import db, settings, tabs
 
-app = FastAPI(title="Home dashboards", docs_url=None, redoc_url=None, openapi_url=None)
+
+@asynccontextmanager
+async def lifespan(app):
+    if db.enabled():
+        try:
+            db.migrate()   # schema changes run from one place: here, at start
+        except Exception as e:
+            print(f"tab table migration failed: {e}", flush=True)
+    yield
+
+
+app = FastAPI(title="Home dashboards", docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan)
 UI = Path(settings.UI_DIR).resolve()
 HASHED = (".js", ".css")
 
@@ -32,7 +44,7 @@ def config():
 @app.get("/api/tabs")
 def list_tabs():
     rows, problems = tabs.load()
-    return JSONResponse({"tabs": rows, "problems": problems}, headers={"Cache-Control": "no-store"})
+    return JSONResponse({"tabs": rows, "problems": problems, "source": "db" if db.enabled() else "file"}, headers={"Cache-Control": "no-store"})
 
 
 @app.get("/healthz")
