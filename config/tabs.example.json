@@ -1,0 +1,4 @@
+[
+  { "id": "first-app", "title": "First app", "url": "http://localhost:4300/", "order": 10, "description": "An Angular app that lists this wrapper in its FRAME_ANCESTORS" },
+  { "id": "second-app", "title": "Second app", "url": "http://localhost:4301/", "order": 20, "enabled": false }
+]

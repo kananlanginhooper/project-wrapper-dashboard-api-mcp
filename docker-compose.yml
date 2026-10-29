@@ -1,0 +1,15 @@
+# Home dashboards: docker compose up -d --build   (restart: unless-stopped, so it comes back with Docker after a reboot)
+# Settings in .env (copy .env.example); the tab list in config/tabs.json (copy config/tabs.example.json).
+name: home-dashboards
+
+services:
+  wrapper:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      TABS_FILE: /config/tabs.json
+    volumes:
+      - ./config:/config:ro
+    ports:
+      - "${DASH_BIND:-0.0.0.0}:${DASH_PORT:-8097}:8097"
