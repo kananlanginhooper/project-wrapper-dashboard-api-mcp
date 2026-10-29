@@ -1,0 +1,220 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Home dashboards",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/config": {
+      "get": {
+        "tags": [
+          "config"
+        ],
+        "summary": "Runtime config for the UI",
+        "operationId": "app_config_api_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppConfig"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tabs": {
+      "get": {
+        "tags": [
+          "tabs"
+        ],
+        "summary": "The dashboards to show, in nav order",
+        "operationId": "list_tabs_api_tabs_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TabList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Liveness for the container health check",
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AppConfig": {
+        "properties": {
+          "apiBase": {
+            "type": "string",
+            "title": "Apibase"
+          },
+          "basePath": {
+            "type": "string",
+            "title": "Basepath"
+          },
+          "publicUrl": {
+            "type": "string",
+            "title": "Publicurl"
+          },
+          "frameParents": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Frameparents"
+          },
+          "login": {
+            "$ref": "#/components/schemas/LoginConfig"
+          }
+        },
+        "type": "object",
+        "required": [
+          "apiBase",
+          "basePath",
+          "publicUrl",
+          "frameParents",
+          "login"
+        ],
+        "title": "AppConfig",
+        "description": "GET /api/config: the group-standard runtime config every app serves."
+      },
+      "Health": {
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "title": "Ok"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ok"
+        ],
+        "title": "Health"
+      },
+      "LoginConfig": {
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "issuer": {
+            "type": "string",
+            "title": "Issuer"
+          },
+          "clientId": {
+            "type": "string",
+            "title": "Clientid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "enabled",
+          "issuer",
+          "clientId"
+        ],
+        "title": "LoginConfig"
+      },
+      "Tab": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,39}$",
+            "title": "Id",
+            "description": "URL path segment: /<id>"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Title"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "The app's own address for this environment, loaded in the iframe"
+          },
+          "order": {
+            "type": "integer",
+            "title": "Order",
+            "default": 1000
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "url"
+        ],
+        "title": "Tab",
+        "description": "One dashboard tab: a standalone app shown in an iframe."
+      },
+      "TabList": {
+        "properties": {
+          "tabs": {
+            "items": {
+              "$ref": "#/components/schemas/Tab"
+            },
+            "type": "array",
+            "title": "Tabs"
+          },
+          "problems": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Problems",
+            "description": "Rows that were skipped, and why"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "db",
+              "file",
+              "demo"
+            ],
+            "title": "Source"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tabs",
+          "source"
+        ],
+        "title": "TabList"
+      }
+    }
+  }
+}
