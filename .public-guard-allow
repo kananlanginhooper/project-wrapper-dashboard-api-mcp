@@ -1,0 +1,2 @@
+net:server-name ui/demo/tabs.json idrac
+net:server-name docs/api/tabs idrac
