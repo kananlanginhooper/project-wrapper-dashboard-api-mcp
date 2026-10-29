@@ -10,7 +10,7 @@ import json
 import re
 from urllib.parse import urlsplit
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from app.core.config import get_settings
 from app.db import session as db
@@ -76,7 +76,8 @@ def _from_file() -> TabList:
 def _from_db() -> TabList:
     env = get_settings().tabs_env
     with db.session() as s:
-        rows = s.scalars(select(TabRow).where(TabRow.enabled).order_by(TabRow.sort_order, TabRow.title)).all()
+        query = select(TabRow).where(TabRow.enabled).order_by(TabRow.sort_order, func.lower(TabRow.title))
+        rows = s.scalars(query).all()
         tabs, problems = [], []
         for r in rows:
             urls = {u.env: u.url for u in r.urls}
@@ -112,6 +113,7 @@ def upsert(
         ):
             if value is not None:
                 setattr(row, field, value)
+        row.updated_at = func.now()  # every upsert counts as a change, URL-only ones included
         s.flush()
         for env, url in (urls or {}).items():
             s.merge(TabUrlRow(tab_id=tab_id, env=env, url=url))
