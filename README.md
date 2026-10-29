@@ -15,6 +15,7 @@ One top nav over many dashboards. Every tab is a **standalone app shown in an if
 ```bash
 cp .env.example .env
 cp config/tabs.example.json config/tabs.json   # then list your dashboards
+docker network create --subnet <subnet your database allows> homelab   # once per machine; shared by all the dashboards
 docker compose up -d --build
 ```
 
