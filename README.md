@@ -42,7 +42,7 @@ Its tabs are other projects' public demos, each running on mock data. They're li
 
 | Variable | Meaning |
 |---|---|
-| `DASH_PORT`, `DASH_BIND` | Host port and interface |
+| `DASH_PORT`, `BIND_ADDR` | Host port, and the one IPv4 address to publish it on (default `127.0.0.1`; a LAN address to share it). Never `0.0.0.0` on a host with a public IPv6 address |
 | `PUBLIC_URL` | Exactly what browsers type to reach the wrapper |
 | `UI_BASE_PATH` | Path prefix (`/` or `/dash/`), written into `<base href>` at request time |
 | `FRAME_ANCESTORS` | Origins allowed to frame the wrapper itself. Normally empty, which sends `frame-ancestors 'self'` |
