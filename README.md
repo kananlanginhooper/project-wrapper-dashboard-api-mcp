@@ -22,6 +22,12 @@ Open http://localhost:8097/. `config/tabs.json` is re-read on every request, so 
 
 For UI work: `cd ui && npm ci && npx ng serve`. Run the API on 8097 next to it.
 
+## Code layout
+
+It follows the group template. Details and before/after screenshots are in [docs/refactor/](docs/refactor/README.md).
+- **UI:** `ui/src/app/{core,shared,features}`, Angular Material + the shared theme in `ui/src/styles/theme.scss`, types generated from the API's OpenAPI (`npm run api-types`), `npx ng lint`.
+- **API:** `api/app/{core,api/routes,schemas,services,db}`, Alembic migrations, tests with `pytest` (`pip install -r api/requirements-dev.txt`; `ruff check`).
+
 ## Demo (GitHub Pages)
 
 `cd ui && npm run build:demo` writes a back-end-free demo to `docs/`:
@@ -59,11 +65,11 @@ The wrapper creates the tables at start: `tab` and `tab_url`.
 An app's address usually differs per machine, so each tab has a URL per environment. The wrapper picks the row for its `TABS_ENV` (for example `laptop` or `server`), falling back to `default`. That lets the laptop and the server share one database.
 
 ```bash
-docker compose exec wrapper python -m wrapper.cli list
-docker compose exec wrapper python -m wrapper.cli set media --title "Media library" --order 40 --url laptop=http://localhost:8093/ --url server=http://host:8093/
-docker compose exec wrapper python -m wrapper.cli set media --disable          # only the given fields change
-docker compose exec wrapper python -m wrapper.cli import /config/tabs.json --env laptop
-docker compose exec wrapper python -m wrapper.cli remove media
+docker compose exec wrapper python -m app.cli list
+docker compose exec wrapper python -m app.cli set media --title "Media library" --order 40 --url laptop=http://localhost:8093/ --url server=http://host:8093/
+docker compose exec wrapper python -m app.cli set media --disable          # only the given fields change
+docker compose exec wrapper python -m app.cli import /config/tabs.json --env laptop
+docker compose exec wrapper python -m app.cli remove media
 ```
 
 If the database is unreachable, the nav says so and the wrapper keeps running.
