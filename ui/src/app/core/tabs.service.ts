@@ -20,7 +20,11 @@ export class TabsService {
     try {
       const r = await fetch('api/tabs', { cache: 'no-store' }); // relative to <base href>, so a path prefix just works
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      const next = ((await r.json()) as TabList).tabs ?? [];
+      const list = (await r.json()) as TabList;
+      const next = list.tabs ?? [];
+      // the tab table is unreachable: keep the tabs we have and say so, instead of emptying the nav
+      if (!next.length && list.problems?.length && this.tabs().length)
+        throw new Error(list.problems[0]);
       // keep the old array when nothing changed, so iframes aren't reloaded on every poll
       if (JSON.stringify(next) !== JSON.stringify(this.tabs())) this.tabs.set(next);
       this.error.set('');
