@@ -1,36 +1,57 @@
-import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
-import { Tabs } from './tabs';
+import { TabsService } from './core/tabs.service';
+import { NavBar } from './features/shell/nav-bar';
 
 /** Home dashboards: one top nav; each tab is a standalone app in an iframe. */
 @Component({
-  selector: 'shell-root',
+  selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, NavBar],
   template: `
-    <nav>
-      <span class="brand">Home dashboards</span>
-      @for (t of reg.tabs(); track t.id) {
-        <a [routerLink]="['/', t.id]" routerLinkActive="on" [title]="t.description || t.title">{{ t.title }}</a>
-        <a class="out" [href]="t.url" target="_blank" rel="noopener" [title]="'Open ' + t.title + ' on its own'">↗</a>
-      }
-      @if (reg.error()) { <span class="warn">{{ reg.error() }}</span> }
-      @else if (reg.loaded() && !reg.tabs().length) { <span class="warn">no dashboards registered yet</span> }
-    </nav>
-    <main><router-outlet /></main>`,
+    <app-nav-bar [tabs]="tabs.tabs()" [activeId]="activeId()" [note]="note()" />
+    <main><router-outlet /></main>
+  `,
+  styles: `
+    app-nav-bar {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 100;
+    }
+    /* the stage is the scroll container, so an app's sticky header sticks under the nav */
+    main {
+      position: fixed;
+      inset: var(--nav-h) 0 0 0;
+      overflow: auto;
+    }
+  `,
 })
 export class App {
-  protected readonly reg = inject(Tabs);
+  protected readonly tabs = inject(TabsService);
   private readonly router = inject(Router);
-  private readonly url = toSignal(this.router.events.pipe(filter(e => e instanceof NavigationEnd), map(() => this.router.url)), { initialValue: '' });
+  private readonly url = toSignal(
+    this.router.events.pipe(
+      filter((e) => e instanceof NavigationEnd),
+      map(() => this.router.url),
+    ),
+    { initialValue: '' },
+  );
+
+  protected readonly activeId = computed(() => this.url().split(/[/?#]/)[1] ?? '');
+  protected readonly note = computed(
+    () =>
+      this.tabs.error() ||
+      (this.tabs.loaded() && !this.tabs.tabs().length ? 'no dashboards registered yet' : ''),
+  );
 
   constructor() {
     // "/" opens the first tab once the list is in
     effect(() => {
-      const first = this.reg.tabs()[0];
-      if (first && (this.url() === '/' || this.url() === '')) this.router.navigate(['/', first.id], { replaceUrl: true });
+      const first = this.tabs.tabs()[0];
+      if (first && (this.url() === '/' || this.url() === ''))
+        this.router.navigate(['/', first.id], { replaceUrl: true });
     });
   }
 }
