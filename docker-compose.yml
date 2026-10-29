@@ -12,7 +12,7 @@ services:
     volumes:
       - ./config:/config:ro
     ports:
-      - "${DASH_BIND:-0.0.0.0}:${DASH_PORT:-8097}:8097"
+      - "${BIND_ADDR:-127.0.0.1}:${DASH_PORT:-8097}:8097"
 
 # One shared network for every home-project container (its subnet is the one the database allows).
 # Create it once per machine: docker network create --subnet <subnet your database allows> homelab
