@@ -1,6 +1,6 @@
 // GitHub Pages demo: copies the demo build to ../docs and adds the static stand-ins for the API.
 // Run by `npm run build:demo`. No back end: api/tabs and api/config are plain files, and every tab is a public page.
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -9,7 +9,10 @@ const build = join(here, '..', 'dist', 'demo', 'browser');
 const docs = join(here, '..', '..', 'docs');
 if (!existsSync(join(build, 'index.html'))) throw new Error(`no demo build at ${build}`);
 
-rmSync(docs, { recursive: true, force: true });
+// replace the previous demo, but keep docs/ folders that aren't the demo (docs/refactor: screenshots)
+const KEEP = new Set(['refactor']);
+mkdirSync(docs, { recursive: true });
+for (const name of readdirSync(docs)) if (!KEEP.has(name)) rmSync(join(docs, name), { recursive: true, force: true });
 cpSync(build, docs, { recursive: true });
 cpSync(join(here, 'about.html'), join(docs, 'about.html'));
 mkdirSync(join(docs, 'api'), { recursive: true });

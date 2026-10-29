@@ -1,0 +1,31 @@
+<span class="brand">Home dashboards</span>
+
+<nav mat-tab-nav-bar [tabPanel]="panel" mat-stretch-tabs="false" mat-align-tabs="start">
+  @for (t of tabs(); track t.id) {
+    <a
+      mat-tab-link
+      [routerLink]="['/', t.id]"
+      routerLinkActive
+      #rla="routerLinkActive"
+      [active]="rla.isActive"
+      [matTooltip]="t.description || t.title"
+      >{{ t.title }}</a
+    >
+  }
+</nav>
+<mat-tab-nav-panel #panel />
+
+@if (note()) {
+  <span class="note">{{ note() }}</span>
+}
+@if (active(); as t) {
+  <a
+    mat-button
+    class="open"
+    [href]="t.url"
+    target="_blank"
+    rel="noopener"
+    [matTooltip]="'Open ' + t.title + ' on its own'"
+    >↗</a
+  >
+}
