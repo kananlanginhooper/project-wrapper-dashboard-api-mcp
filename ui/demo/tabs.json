@@ -1,0 +1,8 @@
+{
+  "tabs": [
+    { "id": "about", "title": "About", "url": "about.html", "order": 10, "description": "What this wrapper is" },
+    { "id": "game-plan", "title": "Game Plan", "url": "https://kananlanginhooper.github.io/personal-task-manager-angular/", "order": 20, "description": "Life planner demo on mock data (personal-task-manager-angular)" }
+  ],
+  "problems": [],
+  "source": "demo"
+}

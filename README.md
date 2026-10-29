@@ -22,6 +22,15 @@ Open http://localhost:8097/. `config/tabs.json` is re-read on every request, so 
 
 For UI work: `cd ui && npm ci && npx ng serve`. Run the API on 8097 next to it.
 
+## Demo (GitHub Pages)
+
+`cd ui && npm run build:demo` writes a back-end-free demo to `docs/`:
+- the shell, built for `/project-wrapper-dashboard-api-mcp/`
+- a static `api/tabs` and `api/config`
+- an About page
+
+Its tabs are other projects' public demos, each running on mock data. They're listed in [`ui/demo/tabs.json`](ui/demo/tabs.json). GitHub Pages serves `docs/` from `main`.
+
 ## Settings (`.env`)
 
 | Variable | Meaning |

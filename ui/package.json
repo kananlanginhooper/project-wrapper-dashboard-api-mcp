@@ -5,7 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "build:demo": "ng build --base-href /project-wrapper-dashboard-api-mcp/ --output-path dist/demo && node demo/finish.mjs"
   },
   "prettier": {
     "printWidth": 100,

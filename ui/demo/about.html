@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Home dashboards</title>
+  <style>
+    :root { --bg: #f5f6f8; --card: #fff; --ink: #1c2330; --muted: #6a7384; --line: #e2e5ea; --accent: #2f6fdb; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #0f1318; --card: #171c23; --ink: #e6e9ee; --muted: #8d96a6; --line: #262d37; --accent: #5b93f0; } }
+    body { margin: 0; padding: 32px 16px; background: var(--bg); color: var(--ink); font: 15px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 720px; margin: 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 28px; }
+    h1 { font-size: 22px; margin: 0 0 8px; } h2 { font-size: 16px; margin: 24px 0 6px; }
+    p, li { color: var(--ink); } .muted { color: var(--muted); } a { color: var(--accent); } code { font-size: 13px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Home dashboards</h1>
+  <p class="muted">A demo of the wrapper: the tabs above are separate apps, each running on its own and shown here in an iframe.</p>
+  <h2>How it works</h2>
+  <ul>
+    <li>The wrapper is a small Angular shell with a FastAPI back end. It knows nothing about the apps inside it, only their titles and addresses.</li>
+    <li>The tab list comes from a Postgres table, with an address per environment (laptop, server, later one subdomain per app), or from a JSON file.</li>
+    <li>Each app stays a complete project that runs without the wrapper. It allows the wrapper's address to frame it, and nothing else.</li>
+    <li>Sign-in will be single sign-on through a small self-hosted OpenID Connect provider: each app is its own client (authorization code + PKCE).</li>
+  </ul>
+  <h2>In this demo</h2>
+  <p>There's no back end: the tab list is a static file, and each tab is that project's own public demo running on mock data.</p>
+  <h2>Code</h2>
+  <ul>
+    <li><a href="https://github.com/kananlanginhooper/project-wrapper-dashboard-api-mcp" target="_blank" rel="noopener">project-wrapper-dashboard-api-mcp</a>: this wrapper</li>
+    <li><a href="https://github.com/kananlanginhooper/OpenID-Connect-Python-Auth-for-private-sites" target="_blank" rel="noopener">OpenID-Connect-Python-Auth-for-private-sites</a>: the sign-in provider</li>
+  </ul>
+</main>
+</body>
+</html>
