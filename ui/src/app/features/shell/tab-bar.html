@@ -45,7 +45,7 @@
       </a>
     }
     @if (active(); as t) {
-      <a class="row open" [href]="t.url" target="_blank" rel="noopener" (click)="closeMore()">
+      <a class="row open" [href]="route.urlFor(t)" target="_blank" rel="noopener" (click)="closeMore()">
         <span class="icon" aria-hidden="true">open_in_new</span>Open {{ t.title }} on its own
       </a>
     }
