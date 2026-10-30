@@ -51,11 +51,10 @@ export class App {
   );
 
   constructor() {
-    // "/" opens the first tab once the list is in
+    // "/" opens the first tab once the list is in (also "/?x=1" or "/#y", e.g. a cache-busting link)
     effect(() => {
       const first = this.tabs.tabs()[0];
-      if (first && (this.url() === '/' || this.url() === ''))
-        this.router.navigate(['/', first.id], { replaceUrl: true });
+      if (first && !this.activeId()) this.router.navigate(['/', first.id], { replaceUrl: true });
     });
   }
 }
