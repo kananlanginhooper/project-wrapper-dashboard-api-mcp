@@ -23,6 +23,7 @@ class TabRow(Base):
     title: Mapped[str] = mapped_column(Text)
     sort_order: Mapped[int] = mapped_column(Integer, default=1000, server_default="1000")
     description: Mapped[str] = mapped_column(Text, default="", server_default="")
+    icon: Mapped[str] = mapped_column(Text, default="", server_default="")
     enabled: Mapped[bool] = mapped_column(Boolean, default=True, server_default="true")
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()

@@ -14,6 +14,7 @@ def test_tabs_from_file_sorted_and_validated(client):
         "url": "http://localhost:4300/",
         "order": 10,
         "description": "first",
+        "icon": "",
     }
     assert len(body["problems"]) == 3  # bad id, bad url, duplicate id
 

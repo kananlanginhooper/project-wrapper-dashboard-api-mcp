@@ -170,6 +170,12 @@
             "type": "string",
             "title": "Description",
             "default": ""
+          },
+          "icon": {
+            "type": "string",
+            "title": "Icon",
+            "description": "Material Symbols name for the phone tab bar, e.g. photo_library",
+            "default": ""
           }
         },
         "type": "object",

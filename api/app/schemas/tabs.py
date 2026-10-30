@@ -13,6 +13,7 @@ class Tab(BaseModel):
     url: str = Field(description="The app's own address for this environment, loaded in the iframe")
     order: int = 1000
     description: str = ""
+    icon: str = Field(default="", description="Material Symbols name for the phone tab bar, e.g. photo_library")
 
 
 class TabList(BaseModel):
