@@ -6,3 +6,4 @@ dist/
 .angular/
 __pycache__/
 *.pyc
+*.egg-info/
