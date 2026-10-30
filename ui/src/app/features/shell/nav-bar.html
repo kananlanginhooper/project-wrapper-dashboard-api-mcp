@@ -1,6 +1,12 @@
 <span class="brand">Home dashboards</span>
 
-<nav mat-tab-nav-bar [tabPanel]="panel" mat-stretch-tabs="false" mat-align-tabs="start">
+<nav
+  mat-tab-nav-bar
+  [tabPanel]="panel"
+  [disablePagination]="true"
+  mat-stretch-tabs="false"
+  mat-align-tabs="start"
+>
   @for (t of tabs(); track t.id) {
     <a
       mat-tab-link
