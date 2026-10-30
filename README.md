@@ -25,7 +25,7 @@ For UI work: `cd ui && npm ci && npx ng serve`. Run the API on 8097 next to it.
 
 ## Code layout
 
-It follows the group template. Details and before/after screenshots are in [docs/refactor/](docs/refactor/README.md).
+It follows the group template. Details and before/after screenshots are in [docs/refactor/](docs/refactor/README.md). The phone layout and its screenshots are in [docs/mobile/](docs/mobile/README.md).
 - **UI:** `ui/src/app/{core,shared,features}`, Angular Material + the shared theme in `ui/src/styles/theme.scss`, types generated from the API's OpenAPI (`npm run api-types`), `npx ng lint`.
 - **API:** `api/app/{core,api/routes,schemas,services,db}`, Alembic migrations, tests with `pytest` (`pip install -r api/requirements-dev.txt`; `ruff check`).
 
