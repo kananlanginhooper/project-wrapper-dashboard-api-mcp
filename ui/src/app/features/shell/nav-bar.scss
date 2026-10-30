@@ -60,6 +60,7 @@ nav {
   min-width: 44px;
   height: 44px;
   color: var(--app-muted);
+  font-size: 20px; // the button's 12px label made the arrow a speck
 }
 
 // phones: a strip of eight tabs can't fit, so the brand and strip give way to the picker
