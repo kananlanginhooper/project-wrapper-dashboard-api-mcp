@@ -3,4 +3,11 @@
 :root {
   --app-accent: light-dark(#2f6fdb, #5b93f0);
   --nav-h: 44px;
+  --nav-top: calc(var(--nav-h) + env(safe-area-inset-top)); // where the frame starts, below a notch
+}
+
+/* the phone tab menu renders in the overlay, outside the nav bar's styles */
+.tab-menu [aria-current='page'] {
+  --mat-menu-item-label-text-color: var(--app-accent);
+  --mat-menu-item-label-text-weight: 600;
 }

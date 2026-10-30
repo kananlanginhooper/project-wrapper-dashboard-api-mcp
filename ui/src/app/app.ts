@@ -20,11 +20,15 @@ import { NavBar } from './features/shell/nav-bar';
       inset: 0 0 auto 0;
       z-index: 100;
     }
-    /* the stage is the scroll container, so an app's sticky header sticks under the nav */
+    /* the frame fills the rest of the dynamic viewport and does its own scrolling (no second scrollbar here);
+       the side and bottom safe areas stay clear because env() reads 0 inside the app's iframe */
     main {
       position: fixed;
-      inset: var(--nav-h) 0 0 0;
-      overflow: auto;
+      top: var(--nav-top);
+      left: env(safe-area-inset-left);
+      right: env(safe-area-inset-right);
+      height: calc(100dvh - var(--nav-top) - env(safe-area-inset-bottom));
+      overflow: hidden;
     }
   `,
 })

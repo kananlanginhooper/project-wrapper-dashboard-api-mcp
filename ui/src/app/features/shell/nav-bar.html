@@ -15,8 +15,24 @@
 </nav>
 <mat-tab-nav-panel #panel />
 
+<!-- phones: the strip above is hidden; this button shows the active tab and opens the list -->
+<button mat-button class="picker" [matMenuTriggerFor]="menu" aria-label="Choose a dashboard">
+  <span class="picker-label">{{ active()?.title || 'Home dashboards' }}</span>
+  <span class="caret" aria-hidden="true">▾</span>
+</button>
+<mat-menu #menu="matMenu" class="tab-menu">
+  @for (t of tabs(); track t.id) {
+    <a
+      mat-menu-item
+      [routerLink]="['/', t.id]"
+      [attr.aria-current]="t.id === activeId() ? 'page' : null"
+      >{{ t.title }}</a
+    >
+  }
+</mat-menu>
+
 @if (note()) {
-  <span class="note">{{ note() }}</span>
+  <span class="note" [title]="note()">{{ note() }}</span>
 }
 @if (active(); as t) {
   <a
@@ -25,6 +41,7 @@
     [href]="t.url"
     target="_blank"
     rel="noopener"
+    [attr.aria-label]="'Open ' + t.title + ' on its own'"
     [matTooltip]="'Open ' + t.title + ' on its own'"
     >↗</a
   >
