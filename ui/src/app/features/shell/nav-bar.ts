@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { FrameRoute } from '../../core/frame-route';
 import { Tab } from '../../core/models';
 
 /** The top bar (wider than a phone): brand, one Material tab link per dashboard, a status note, and
@@ -30,6 +31,7 @@ export class NavBar {
   readonly note = input<string>('');
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  protected readonly route = inject(FrameRoute); // ↗ opens the app at its current page
   protected readonly active = computed(() => this.tabs().find((t) => t.id === this.activeId()));
 
   constructor() {

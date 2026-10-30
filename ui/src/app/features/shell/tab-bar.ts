@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { RouterLink } from '@angular/router';
+import { FrameRoute } from '../../core/frame-route';
 import { Tab } from '../../core/models';
 
 /** Tabs that fit the bar before the rest move under "More" (the More slot makes five). */
@@ -29,6 +30,7 @@ export class TabBar {
   readonly note = input<string>('');
 
   private readonly sheet = inject(MatBottomSheet);
+  protected readonly route = inject(FrameRoute); // "Open … on its own" opens the app at its current page
   private readonly moreSheet = viewChild.required<TemplateRef<unknown>>('moreSheet');
 
   protected readonly inBar = computed(() => this.tabs().slice(0, IN_BAR));
