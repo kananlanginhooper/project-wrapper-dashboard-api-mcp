@@ -14,7 +14,8 @@ export function provideRouteReporter(frameParents: () => readonly string[]): Env
     if (window.parent === window) return;
     const router = inject(Router);
     // the page that framed us: ancestorOrigins where the browser has it (Chrome, Safari), else the referrer (Firefox)
-    const parent = location.ancestorOrigins?.[0] ?? (document.referrer && new URL(document.referrer).origin);
+    const parent =
+      location.ancestorOrigins?.[0] ?? (document.referrer && new URL(document.referrer).origin);
     router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
       // router.url is the path + query + hash relative to <base href>, which is what the wrapper wants
       if (parent && frameParents().includes(parent))
