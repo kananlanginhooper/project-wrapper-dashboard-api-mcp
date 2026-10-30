@@ -17,9 +17,13 @@ Here `config` is what the app loaded from `/api/config`.
 **Anything else:** after each in-app navigation, run:
 
 ```js
-const parent = location.ancestorOrigins?.[0] ?? (document.referrer && new URL(document.referrer).origin);
+const parent =
+  location.ancestorOrigins?.[0] ?? (document.referrer && new URL(document.referrer).origin);
 if (window.parent !== window && parent && frameParents.includes(parent))
-  window.parent.postMessage({ type: 'route', path: pathRelativeToBase + location.search + location.hash }, parent);
+  window.parent.postMessage(
+    { type: 'route', path: pathRelativeToBase + location.search + location.hash },
+    parent,
+  );
 ```
 
 ### What the wrapper does with it
