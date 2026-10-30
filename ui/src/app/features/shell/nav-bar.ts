@@ -1,21 +1,21 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  ElementRef,
   afterRenderEffect,
   computed,
   inject,
   input,
-  viewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabNav, MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Tab } from '../../core/models';
 
 /** The top bar (wider than a phone): brand, one Material tab link per dashboard, a status note, and
- *  "open this tab on its own". Phones get the bottom TabBar instead. */
+ *  "open this tab on its own". The strip scrolls by drag or wheel, not arrow buttons (theme.scss).
+ *  Phones get the bottom TabBar instead. */
 @Component({
   selector: 'app-nav-bar',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,29 +29,22 @@ export class NavBar {
   readonly activeId = input<string>('');
   readonly note = input<string>('');
 
-  private readonly strip = viewChild(MatTabNav);
-  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   protected readonly active = computed(() => this.tabs().find((t) => t.id === this.activeId()));
-  private readonly activeIndex = computed(() =>
-    this.tabs().findIndex((t) => t.id === this.activeId()),
-  );
 
   constructor() {
-    // the tab list arrives after the strip first lays out, so Material never pages to the active tab on its own;
-    // one frame later its links are registered
+    // after the tab list arrives or the route changes; one frame later the links are rendered (the router marks
+    // the active one later still, so find it by position rather than by its active class)
     afterRenderEffect(() => {
-      this.activeIndex();
+      this.active();
       requestAnimationFrame(() => this.showActiveTab());
     });
   }
 
-  /** Page the tab strip so the active tab is in view (also after a resize, e.g. a phone turning to landscape). */
+  /** Scroll the strip so the active tab is in view (also after a resize, e.g. a phone turning to landscape). */
   protected showActiveTab(): void {
-    const strip = this.strip();
-    const i = this.activeIndex();
-    if (!strip || i < 0) return;
-    strip.updatePagination();
-    strip._scrollToLabel(i);
-    this.cdr.detectChanges(); // Material moves the strip in its content check, which zoneless mode won't schedule
+    const i = this.tabs().findIndex((t) => t.id === this.activeId());
+    const links = this.host.nativeElement.querySelectorAll('a.mat-mdc-tab-link');
+    links[i]?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 }
