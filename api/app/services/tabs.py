@@ -3,7 +3,7 @@
 Both are read on every request, so a new row or a file edit adds a tab without a restart. The file is per machine
 (laptop and server URLs differ), so it isn't committed. Format: a list of
 {"id": "first-app", "title": "First app", "url": "http://host:port/", "order": 10,
- "description": "...", "enabled": true}
+ "description": "...", "icon": "photo_library", "enabled": true}
 """
 
 import json
@@ -67,6 +67,7 @@ def _from_file() -> TabList:
                     url=row["url"],
                     order=int(row.get("order", 1000)),
                     description=row.get("description", ""),
+                    icon=str(row.get("icon", "")),
                 )
             )
     tabs.sort(key=lambda t: (t.order, t.title.lower()))
@@ -85,7 +86,9 @@ def _from_db() -> TabList:
             if not url:
                 problems.append(f"{r.id}: no url for env {env!r} or 'default'")
                 continue
-            tabs.append(Tab(id=r.id, title=r.title, url=url, order=r.sort_order, description=r.description))
+            tabs.append(
+                Tab(id=r.id, title=r.title, url=url, order=r.sort_order, description=r.description, icon=r.icon)
+            )
     return TabList(tabs=tabs, problems=problems, source="db")
 
 
@@ -96,6 +99,7 @@ def upsert(
     description: str | None = None,
     enabled: bool | None = None,
     urls: dict[str, str] | None = None,
+    icon: str | None = None,
 ) -> None:
     """Create a tab, or change only the fields given (None keeps what's there)."""
     with db.session() as s:
@@ -110,6 +114,7 @@ def upsert(
             ("sort_order", order),
             ("description", description),
             ("enabled", enabled),
+            ("icon", icon),
         ):
             if value is not None:
                 setattr(row, field, value)

@@ -2,7 +2,7 @@
 
 migrate                                  bring the tables up to date (the server also does this at start)
 list                                     every tab with its URL per environment
-set ID [--title T] [--order N] [--description D] [--enable|--disable] [--url ENV=URL ...]
+set ID [--title T] [--order N] [--description D] [--icon NAME] [--enable|--disable] [--url ENV=URL ...]
                                          a new tab needs --title; for an existing one only the given fields change
 remove ID
 import FILE --env ENV                    copy a tabs.json file into the table, its URLs under ENV
@@ -27,6 +27,7 @@ def main(argv: list[str] | None = None) -> None:
     s.add_argument("--title")
     s.add_argument("--order", type=int)
     s.add_argument("--description")
+    s.add_argument("--icon", help="Material Symbols name, e.g. photo_library")
     on = s.add_mutually_exclusive_group()
     on.add_argument("--enable", dest="enabled", action="store_const", const=True)
     on.add_argument("--disable", dest="enabled", action="store_const", const=False)
@@ -52,7 +53,7 @@ def main(argv: list[str] | None = None) -> None:
             if err := tabs.check({"id": a.id, "title": a.title or "-", "url": u}):
                 sys.exit(err)
         try:
-            tabs.upsert(a.id, a.title, a.order, a.description, a.enabled, urls)
+            tabs.upsert(a.id, a.title, a.order, a.description, a.enabled, urls, a.icon)
         except ValueError as e:
             sys.exit(str(e))
         print(f"saved {a.id}")
@@ -72,6 +73,7 @@ def main(argv: list[str] | None = None) -> None:
                 row.get("description", ""),
                 row.get("enabled", True),
                 {a.env: row["url"]},
+                row.get("icon", ""),
             )
             print(f"imported {row['id']}")
 

@@ -9,25 +9,17 @@ import {
   viewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatTabNav, MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Tab } from '../../core/models';
 
-/** The top bar: brand, one Material tab link per dashboard (a menu on phones), a status note, and
- *  "open this tab on its own". */
+/** The top bar (wider than a phone): brand, one Material tab link per dashboard, a status note, and
+ *  "open this tab on its own". Phones get the bottom TabBar instead. */
 @Component({
   selector: 'app-nav-bar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    MatTabsModule,
-    MatMenuModule,
-    MatButtonModule,
-    MatTooltipModule,
-    RouterLink,
-    RouterLinkActive,
-  ],
+  imports: [MatTabsModule, MatButtonModule, MatTooltipModule, RouterLink, RouterLinkActive],
   templateUrl: './nav-bar.html',
   styleUrl: './nav-bar.scss',
   host: { '(window:resize)': 'showActiveTab()' },

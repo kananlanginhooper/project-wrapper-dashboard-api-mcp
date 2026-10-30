@@ -115,6 +115,12 @@ export interface components {
              * @default
              */
             description: string;
+            /**
+             * Icon
+             * @description Material Symbols name for the phone tab bar, e.g. photo_library
+             * @default
+             */
+            icon: string;
         };
         /** TabList */
         TabList: {

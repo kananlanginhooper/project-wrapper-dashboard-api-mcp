@@ -25,26 +25,6 @@ nav {
   --mat-tab-container-height: var(--nav-h);
 }
 
-.picker {
-  display: none;
-  flex: 1 1 auto;
-  min-width: 0;
-  height: var(--nav-h);
-  justify-content: flex-start;
-  font: var(--app-text-lg);
-}
-
-.picker-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.caret {
-  margin-left: var(--app-space-2);
-  color: var(--app-muted);
-}
-
 .note {
   min-width: 0;
   overflow: hidden;
@@ -61,18 +41,4 @@ nav {
   height: 44px;
   color: var(--app-muted);
   font-size: 20px; // the button's 12px label made the arrow a speck
-}
-
-// phones: a strip of eight tabs can't fit, so the brand and strip give way to the picker
-@media (max-width: 600px) {
-  .brand,
-  nav {
-    display: none;
-  }
-  .picker {
-    display: inline-flex;
-  }
-  .note {
-    flex: 0 1 30%;
-  }
 }

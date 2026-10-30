@@ -34,6 +34,7 @@ def test_per_env_urls_and_partial_update(tabs, monkeypatch):
     tabs.upsert("media", "Media", 40, "pics", True, {"laptop": "http://localhost:8093/", "server": "http://srv:8093/"})
     tabs.upsert("plan", "Plan", 20, urls={"default": "http://plan/"})
     tabs.upsert("media", description="photos")  # only the description changes
+    tabs.upsert("media", icon="photo_library")
     with pytest.raises(ValueError):
         tabs.upsert("new-one", urls={"default": "http://x/"})  # a new tab needs a title
 
@@ -45,6 +46,7 @@ def test_per_env_urls_and_partial_update(tabs, monkeypatch):
         ("media", "http://srv:8093/"),
     ]
     assert got.tabs[1].description == "photos" and got.tabs[1].title == "Media"
+    assert got.tabs[1].icon == "photo_library" and got.tabs[0].icon == ""
 
     monkeypatch.setenv("TABS_ENV", "phone")
     get_settings.cache_clear()
