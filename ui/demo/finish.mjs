@@ -21,6 +21,15 @@ writeFileSync(join(docs, 'api', 'config'), JSON.stringify({
   apiBase: 'api/', basePath: '/project-wrapper-dashboard-api-mcp/', publicUrl: 'https://kananlanginhooper.github.io/project-wrapper-dashboard-api-mcp',
   frameParents: [], login: { enabled: false, issuer: '', clientId: '' },
 }));
+// the icon font comes from jsDelivr in the demo, not docs/: the public-repo guard scans binaries, and this font's
+// bytes happen to contain a denylisted string (the real app still serves its own copy)
+const symbols = JSON.parse(readFileSync(join(here, '..', 'node_modules', 'material-symbols', 'package.json'))).version;
+for (const css of readdirSync(docs).filter((f) => f.endsWith('.css'))) {
+  const path = join(docs, css);
+  writeFileSync(path, readFileSync(path, 'utf8').replace(/url\("?\.?\/?media\/material-symbols-outlined-[A-Z0-9]+\.woff2"?\)/,
+    `url("https://cdn.jsdelivr.net/npm/material-symbols@${symbols}/material-symbols-outlined.woff2")`));
+}
+rmSync(join(docs, 'media'), { recursive: true, force: true });
 // Pages has no SPA fallback: a deep link like /game-plan serves 404.html, which is the app itself
 writeFileSync(join(docs, '404.html'), readFileSync(join(docs, 'index.html')));
 writeFileSync(join(docs, '.nojekyll'), '');
