@@ -1,10 +1,45 @@
 {
   "tabs": [
-    { "id": "about", "title": "About", "url": "about.html", "order": 10, "description": "What this wrapper is" },
-    { "id": "game-plan", "title": "Game Plan", "url": "https://kananlanginhooper.github.io/personal-task-manager-angular/", "order": 20, "description": "Life planner demo on mock data (personal-task-manager-angular)" },
-    { "id": "recovery", "title": "Recovery", "url": "https://kananlanginhooper.github.io/server-job-control-dashboard-idrac-gpu-fans-power/", "order": 30, "description": "Data recovery dashboard demo on mock data (server-job-control-dashboard-idrac-gpu-fans-power)" },
-    { "id": "media", "title": "Media", "url": "https://kananlanginhooper.github.io/image-video-recovery-tool-and-dashboard/", "order": 40, "description": "Media library demo on mock data (image-video-recovery-tool-and-dashboard)" },
-    { "id": "offsite", "title": "Offsite", "url": "https://kananlanginhooper.github.io/offsite-backups-google-onedrive/", "order": 50, "description": "Offsite backups demo on mock data (offsite-backups-google-onedrive)" }
+    {
+      "id": "about",
+      "title": "About",
+      "url": "about.html",
+      "order": 10,
+      "description": "What this wrapper is",
+      "icon": "info"
+    },
+    {
+      "id": "game-plan",
+      "title": "Game Plan",
+      "url": "https://kananlanginhooper.github.io/personal-task-manager-angular/",
+      "order": 20,
+      "description": "Life planner demo on mock data (personal-task-manager-angular)",
+      "icon": "checklist"
+    },
+    {
+      "id": "recovery",
+      "title": "Recovery",
+      "url": "https://kananlanginhooper.github.io/server-job-control-dashboard-idrac-gpu-fans-power/",
+      "order": 30,
+      "description": "Data recovery dashboard demo on mock data (server-job-control-dashboard-idrac-gpu-fans-power)",
+      "icon": "settings_backup_restore"
+    },
+    {
+      "id": "media",
+      "title": "Media",
+      "url": "https://kananlanginhooper.github.io/image-video-recovery-tool-and-dashboard/",
+      "order": 40,
+      "description": "Media library demo on mock data (image-video-recovery-tool-and-dashboard)",
+      "icon": "photo_library"
+    },
+    {
+      "id": "offsite",
+      "title": "Offsite",
+      "url": "https://kananlanginhooper.github.io/offsite-backups-google-onedrive/",
+      "order": 50,
+      "description": "Offsite backups demo on mock data (offsite-backups-google-onedrive)",
+      "icon": "cloud_upload"
+    }
   ],
   "problems": [],
   "source": "demo"
