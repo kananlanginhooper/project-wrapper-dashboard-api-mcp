@@ -14,6 +14,8 @@ providers: [provideRouteReporter(() => config.frameParents)];
 
 Here `config` is what the app loaded from `/api/config`.
 
+An app on `withHashLocation` reports `/#` + its route (`/#/c/650?t=54`); the helper does that itself.
+
 **Anything else:** after each in-app navigation, run:
 
 ```js
