@@ -42,3 +42,18 @@ nav {
   color: var(--app-muted);
   font-size: 20px; // the button's 12px label made the arrow a speck
 }
+
+// the author credit (AUTHOR-CREDIT-STANDARD): one muted line, only where the bar has room for it
+.credit {
+  flex: none;
+  color: var(--app-muted);
+  font: var(--app-text-xs);
+  text-decoration: none;
+  white-space: nowrap;
+  &:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 900px) {
+    display: none;
+  }
+}

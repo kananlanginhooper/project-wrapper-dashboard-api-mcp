@@ -98,4 +98,7 @@ If the database is unreachable, the nav says so and the wrapper keeps running.
 
 ## License
 
-GPL-3.0
+GPL-3.0. Copyright (c) 2026 Kanan Hooper.
+
+---
+Built by [Kanan Hooper](https://github.com/kananlanginhooper)

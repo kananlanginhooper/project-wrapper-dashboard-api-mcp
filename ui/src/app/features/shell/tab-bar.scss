@@ -109,3 +109,12 @@ nav {
   color: var(--app-warn);
   font: var(--app-text-sm);
 }
+
+// the author credit (AUTHOR-CREDIT-STANDARD): one muted line at the bottom of the sheet
+.credit {
+  display: block;
+  margin: var(--app-space-2);
+  color: var(--app-muted);
+  font: var(--app-text-xs);
+  text-decoration: none;
+}
