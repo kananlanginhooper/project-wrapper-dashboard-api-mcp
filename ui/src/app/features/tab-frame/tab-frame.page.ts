@@ -13,7 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { FrameRoute, appUrl, restOf } from '../../core/frame-route';
 import { TabsService } from '../../core/tabs.service';
-import { EmptyState } from '../../shared/empty-state/empty-state';
+import { EmptyState } from '../../../for-apps/status';
 
 /** One dashboard, full-size under the nav (route /:id, or /:id/<page> for a shared link): an iframe on the app's own
  *  URL. The app's route reports (src/for-apps) keep the address bar on its current page. */

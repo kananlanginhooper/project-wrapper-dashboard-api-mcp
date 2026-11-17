@@ -9,7 +9,8 @@
     "watch": "ng build --watch --configuration development",
     "build:demo": "ng build --base-href /project-wrapper-dashboard-api-mcp/ --output-path dist/demo && node demo/finish.mjs",
     "api-types": "openapi-typescript ../api/openapi.json -o src/app/core/api-types.ts",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "theme-css": "node tools/theme-css.mjs"
   },
   "prettier": {
     "printWidth": 100,
@@ -44,6 +45,7 @@
     "angular-eslint": "20.7.0",
     "eslint": "^9.39.1",
     "openapi-typescript": "^7.13.0",
+    "sass": "1.90.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "8.46.4"
   }

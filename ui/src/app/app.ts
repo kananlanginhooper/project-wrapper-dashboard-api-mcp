@@ -22,18 +22,10 @@ import { TabBar } from './features/shell/tab-bar';
       inset: 0 0 auto 0;
       z-index: 100;
     }
-    app-tab-bar {
-      display: none;
-      position: fixed;
-      inset: auto 0 0 0;
-      z-index: 100;
-    }
+    /* the bottom bar shows itself at ≤600px (src/for-apps/tab-nav.ts) */
     @media (max-width: 600px) {
       app-nav-bar {
         display: none;
-      }
-      app-tab-bar {
-        display: block;
       }
     }
     /* the frame fills the dynamic viewport between the nav and the bottom bar (styles.scss sets both per screen
@@ -70,7 +62,10 @@ export class App {
     // "/" opens the first tab once the list is in (also "/?x=1" or "/#y", e.g. a cache-busting link)
     effect(() => {
       const first = this.tabs.tabs()[0];
-      if (first && !this.activeId()) this.router.navigate(['/', first.id], { replaceUrl: true });
+      // only after the first navigation ends (url() is '' until then): a lazy page such as /_kit ends after the tabs
+      // arrive, and its id would read as '' meanwhile
+      if (first && this.url() && !this.activeId())
+        this.router.navigate(['/', first.id], { replaceUrl: true });
     });
   }
 }

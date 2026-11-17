@@ -17,11 +17,8 @@
   white-space: nowrap;
 }
 
-nav {
+app-tab-strip {
   flex: 1 1 auto;
-  min-width: 0;
-  border-bottom: 0;
-  --mat-tab-header-divider-height: 0;
   --mat-tab-container-height: var(--nav-h);
 }
 

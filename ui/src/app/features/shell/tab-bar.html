@@ -1,57 +1,7 @@
-<nav aria-label="Dashboards">
-  @for (t of inBar(); track t.id) {
-    <a
-      class="slot"
-      [routerLink]="['/', t.id]"
-      [class.current]="t.id === activeId()"
-      [attr.aria-current]="t.id === activeId() ? 'page' : null"
-    >
-      <span class="icon" aria-hidden="true">{{ icon(t) }}</span>
-      <span class="label">{{ short(t) }}</span>
-    </a>
-  }
-  <button
-    type="button"
-    class="slot"
-    [class.current]="activeInMore()"
-    (click)="openMore()"
-    aria-haspopup="dialog"
-  >
-    @if (activeInMore(); as t) {
-      <span class="icon" aria-hidden="true">{{ icon(t) }}</span>
-      <span class="label">{{ short(t) }}</span>
-    } @else {
-      <span class="icon" aria-hidden="true">more_horiz</span>
-      <span class="label">More</span>
-    }
-    @if (note()) {
-      <span class="dot" aria-label="Status note in More"></span>
-    }
-  </button>
-</nav>
-
-<ng-template #moreSheet>
-  <div class="sheet">
-    @for (t of inMore(); track t.id) {
-      <a
-        class="row"
-        [routerLink]="['/', t.id]"
-        [class.current]="t.id === activeId()"
-        [attr.aria-current]="t.id === activeId() ? 'page' : null"
-        (click)="closeMore()"
-      >
-        <span class="icon" aria-hidden="true">{{ icon(t) }}</span
-        >{{ t.title }}
-      </a>
-    }
+<app-bottom-nav [links]="links()" [dot]="!!note()">
+  <ng-template let-close>
     @if (active(); as t) {
-      <a
-        class="row open"
-        [href]="route.urlFor(t)"
-        target="_blank"
-        rel="noopener"
-        (click)="closeMore()"
-      >
+      <a class="row open" [href]="route.urlFor(t)" target="_blank" rel="noopener" (click)="close()">
         <span class="icon" aria-hidden="true">open_in_new</span>Open {{ t.title }} on its own
       </a>
     }
@@ -61,5 +11,5 @@
     <a class="credit" href="https://github.com/kananlanginhooper" target="_blank" rel="noopener"
       >Built by Kanan Hooper</a
     >
-  </div>
-</ng-template>
+  </ng-template>
+</app-bottom-nav>
