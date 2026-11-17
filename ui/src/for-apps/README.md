@@ -107,6 +107,10 @@ A tab the wrapper isn't showing gets no animation frames. ngx-echarts' `autoResi
 
 In the component: `chart = signal<Resizable | undefined>(undefined)`. Give the div a CSS height. The directive takes anything with `resize()`, so it doesn't import ECharts.
 
+Confirmed with ngx-echarts 20.0.2 / ECharts 5.6 (SVG renderer) in Offsite (11-17): in an iframe hidden for 7 s, the chart was 0 px wide while hidden, redrew to full width once shown, and followed later width changes.
+
+**Testing tip:** a background browser pane (the in-app browser included) paints no frames, so ResizeObserver doesn't fire until it paints. Take a screenshot to make it paint before reading the chart's size.
+
 ## route-reporter.ts: shareable deep links
 
 DASHBOARD-REQUIREMENTS 3.7. The app tells the wrapper which page it's on, and the wrapper shows `/<tab id><that page>` in its address bar, so a copied link opens the same screen.
